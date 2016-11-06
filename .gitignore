@@ -2,7 +2,7 @@
 .DS_Store
 
 ## Maven
-target/
+/**/target/
 
 ## IDEA
 *.iml
