@@ -1,9 +1,55 @@
-## Mac
+# Mac
 .DS_Store
 
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
 ## Maven
-/**/target/
+target/
+
+## Eclipse
+.project
+.classpath
+.settings/
 
 ## IDEA
-*.iml
 .idea/
+*.iml
+.idea/codeStyleSettings.xml
+.idea/compiler.xml
+.idea/copyright/
+.idea/encodings.xml
+.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_7.xml
+.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_7.xml
+.idea/libraries/Maven__com_alibaba_fastjson_1_2_20.xml
+.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml
+.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml
+.idea/libraries/Maven__junit_junit_4_12.xml
+.idea/libraries/Maven__mysql_mysql_connector_java_5_1_36.xml
+.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml
+.idea/libraries/Maven__org_apache_httpcomponents_fluent_hc_4_5_2.xml
+.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml
+.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml
+.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_20.xml
+.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+study-kafka/.idea/
+study-kafka/src/test/
+study-kafka/study-kafka.iml
+study-kafka/target/
+study-redis/src/main/
+study-redis/study-redis.iml
+study-redis/target/
+study.iml
