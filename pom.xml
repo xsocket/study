@@ -139,5 +139,6 @@
   <modules>
     <module>study-kafka</module>
     <module>study-redis</module>
+    <module>study-zookeeper</module>
   </modules>
 </project>
