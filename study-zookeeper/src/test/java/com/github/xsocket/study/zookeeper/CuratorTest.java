@@ -2,6 +2,7 @@ package com.github.xsocket.study.zookeeper;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.*;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.junit.AfterClass;
@@ -38,7 +39,7 @@ public class CuratorTest {
   public void testLock() throws Exception {
     LOCK_COUNT = 0;
     final InterProcessMutex lock = new InterProcessMutex(CLIENT, "/test/curator/lock");
-    for(int i = 0; i < 30; i++) {
+    for (int i = 0; i < 30; i++) {
       final int threadIndex = i;
       new Thread(new Runnable() {
         @Override
@@ -46,11 +47,11 @@ public class CuratorTest {
           try {
             lock.acquire();
             try {
-              System.out.println("Thread:" + threadIndex +", count:" + LOCK_COUNT++);
+              System.out.println("Thread:" + threadIndex + ", count:" + LOCK_COUNT++);
             } finally {
               lock.release();
             }
-          } catch(Exception e) {
+          } catch (Exception e) {
             e.printStackTrace(System.err);
           }
         }
@@ -59,7 +60,7 @@ public class CuratorTest {
     Thread.sleep(5000);
   }
 
-  @Test
+  //@Test
   public void doNothing() {
 
   }
@@ -72,5 +73,49 @@ public class CuratorTest {
   @AfterClass
   public static void destroy() {
     CLIENT.close();
+  }
+
+  public static void main(String[] args) throws Exception {
+    init();
+
+    final NodeCache nodeCache = new NodeCache(CLIENT, "/test/curator");
+    nodeCache.start(true);
+    nodeCache.getListenable().addListener(
+        new NodeCacheListener() {
+          @Override
+          public void nodeChanged() throws Exception {
+            System.out.println(
+                "Node [/test/curator] has changed, new data: " +
+                new String(nodeCache.getCurrentData().getData()));
+          }
+        }
+    );
+
+    final PathChildrenCache childrenCache = new PathChildrenCache(CLIENT, "/test/curator", true);
+    childrenCache.start(PathChildrenCache.StartMode.POST_INITIALIZED_EVENT);
+    childrenCache.getListenable().addListener(
+        new PathChildrenCacheListener() {
+          @Override
+          public void childEvent(CuratorFramework client, PathChildrenCacheEvent event)
+              throws Exception {
+            switch (event.getType()) {
+              case CHILD_ADDED:
+                System.out.println("CHILD_ADDED: " + event.getData().getPath());
+                break;
+              case CHILD_REMOVED:
+                System.out.println("CHILD_REMOVED: " + event.getData().getPath());
+                break;
+              case CHILD_UPDATED:
+                System.out.println("CHILD_UPDATED: " + event.getData().getPath());
+                break;
+              default:
+                break;
+            }
+          }
+        }
+    );
+
+    Thread.sleep(1000000);
+    destroy();
   }
 }
